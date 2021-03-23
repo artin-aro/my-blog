@@ -13,7 +13,8 @@ from flask_gravatar import Gravatar
 from functools import wraps
 import os
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get("SECRECT_KEY")
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
+
 ckeditor = CKEditor(app)
 Bootstrap(app)
 gravatar = Gravatar(app, size=100, rating='g', default='retro',
@@ -40,7 +41,7 @@ class BlogPost(db.Model):
     body = db.Column(db.Text, nullable=False)
     img_url = db.Column(db.String(250), nullable=False)
     comments = relationship("Comment", back_populates="parent_post")
-
+db.create_all()
 
 class User(UserMixin, db.Model):
     __tablename__ = "users"
@@ -50,7 +51,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(250), nullable=False)
     posts = relationship("BlogPost", back_populates="author")
     comments = relationship("Comment", back_populates="comment_author")
-
+db.create_all()
 
 class Comment(db.Model):
     __tablename__ = "comments"
